@@ -1,0 +1,68 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Almarai;
+}
+body {
+  padding: 2rem 4rem;
+}
+#list {
+  display: inline-block;
+  width: 100%;
+  padding: 0.4rem;
+  font-size: 1rem;
+}
+#add-btn {
+  display: block;
+  margin: auto;
+  padding: 0.4rem 1.5rem;
+  font-size: 15px;
+  margin-top: 0.8rem;
+  letter-spacing: 0.5px;
+  font-size: 1rem;
+}
+.append {
+  height: 80vh;
+  background-color: #e5e5e5;
+  margin-top: 1rem;
+  overflow: auto;
+}
+.append > div {
+  display: flex;
+  margin: 0.8rem 0;
+  align-items: center;
+}
+.append > div > * {
+  margin: 0 0.7rem;
+}
+.append > div > h3 {
+  letter-spacing: 0.5px;
+}
+input[type="checkbox"] {
+  height: 1.3rem;
+  width: 1.3rem;
+}
+
+button:hover {
+  cursor: pointer;
+}
+body {
+  background-color: #333333;
+}
+#delete-btn {
+  padding: 0.1rem 0.5rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+#delete-btn:hover {
+  color: red;
+}
+.strike {
+  text-decoration: line-through;
+}
+@media (min-width: 1200px) {
+  :root {
+    font-size: 20px;
+  }
+}

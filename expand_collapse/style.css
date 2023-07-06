@@ -1,0 +1,47 @@
+* {
+  margin: o;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  margin: 1rem 30vw;
+}
+.head-section {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid black;
+  align-items: center;
+  padding: 0px 1rem;
+}
+.head-section > div {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  border: 1.5px solid black;
+  padding: 1.5px 3px;
+  cursor: pointer;
+}
+.head-section > div > p {
+  margin: 0;
+}
+.head-section > h1 {
+  margin: 5px 0;
+}
+svg {
+  margin: 0px 5px;
+}
+.card {
+  border: 2px solid black;
+  margin-bottom: 1rem;
+}
+.body-section {
+  padding: 0px 0.5rem;
+}
+
+.change {
+  transform: rotate(90deg);
+}
+
+.accordian {
+  display: none;
+}
