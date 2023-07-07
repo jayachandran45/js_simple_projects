@@ -46,3 +46,11 @@ function accordian(ele, check) {
     }
   });
 }
+
+// adding gsap to smoothly amimation when the button is clicked
+document.addEventListener("click", (e) => {
+  if (e.target.closest(".head-section > div")) {
+    const gsapEle = e.target.parentElement.parentElement.nextElementSibling;
+    gsap.from(gsapEle, { opacity: 0, duration: 0.5, y: -30 });
+  }
+});

@@ -12,6 +12,12 @@ body {
   width: 100%;
   padding: 0.4rem;
   font-size: 1rem;
+  outline: none;
+  border: 2.5px solid #333333;
+}
+#list:focus {
+  border: 2.5px solid #e5e5e5;
+  border-bottom: 2.5px solid #333333;
 }
 #add-btn {
   display: block;
@@ -23,7 +29,8 @@ body {
   font-size: 1rem;
 }
 .append {
-  height: 80vh;
+  max-height: 80vh;
+  min-height: 80vh;
   background-color: #e5e5e5;
   margin-top: 1rem;
   overflow: auto;
@@ -39,16 +46,20 @@ body {
 .append > div > h3 {
   letter-spacing: 0.5px;
 }
+
 input[type="checkbox"] {
   height: 1.3rem;
   width: 1.3rem;
+  color: red;
+  background-color: red;
 }
 
 button:hover {
   cursor: pointer;
 }
+
 body {
-  background-color: #333333;
+  background: linear-gradient(40deg, white 50%, #333333 50%);
 }
 #delete-btn {
   padding: 0.1rem 0.5rem;

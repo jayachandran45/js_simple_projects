@@ -5,6 +5,19 @@ const appendEle = document.querySelector(".append");
 const key = "localStorage-list";
 let listarr = getLocalStorage() || [];
 
+// This is the event which is responsible all for btn is clicked
+addBtnEle.addEventListener("click", () => {
+  addList();
+});
+
+// This is the event which is responsible all for Enter key is pressed
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    addList();
+  }
+});
+
+// This initially render the array element which is list stored in the local storage
 listarr.forEach((e) => {
   renderEle(e);
 });
@@ -66,26 +79,6 @@ function renderEle(value) {
   appendEle.appendChild(cloneTemplate);
 }
 
-addBtnEle.addEventListener("click", () => {
-  const value = getValue();
-  const newValue = {
-    val: value,
-    state: false,
-    id: new Date().valueOf().toString(),
-  };
-  // clearing the input value after getting the value
-  inputEle.value = "";
-  // condition for if input field is empty. It wont render the template
-  if (value !== null) {
-    renderEle(newValue);
-  } else {
-    console.log("Enter a value and then click the button");
-  }
-  setLocalStorage(newValue);
-
-  hover();
-});
-
 function setLocalStorage(value) {
   if (value.val !== null) {
     listarr.push(value);
@@ -114,3 +107,23 @@ document.addEventListener("click", (e) => {
     localStorage.setItem(`${key}`, JSON.stringify(listarr));
   }
 });
+
+// This the all code to add a list
+function addList() {
+  const value = getValue();
+  const newValue = {
+    val: value,
+    state: false,
+    id: new Date().valueOf().toString(),
+  };
+  // clearing the input value after getting the value
+  inputEle.value = "";
+  // condition for if input field is empty. It wont render the template
+  if (value !== null) {
+    renderEle(newValue);
+  } else {
+    console.log("Enter a value and then click the button");
+  }
+  setLocalStorage(newValue);
+  hover();
+}
