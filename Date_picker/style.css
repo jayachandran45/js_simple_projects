@@ -1,0 +1,30 @@
+.body {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  width: 300px;
+}
+.body > * {
+  border: 2px solid red;
+  text-align: center;
+  padding: 5px;
+  margin-right: -1.5px;
+  margin-bottom: -2px;
+}
+.head {
+  display: flex;
+  justify-content: space-between;
+  width: 300px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.head > .show > span:nth-child(even) {
+  margin-left: 5px;
+}
+.head > .show {
+  background-color: rgb(60, 60, 170);
+  color: white;
+  padding: 5px;
+}
+.head > .show > span:nth-child(odd):hover {
+  background-color: rgb(13, 22, 30);
+}
