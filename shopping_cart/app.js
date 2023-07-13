@@ -5,4 +5,3 @@ aEle.forEach((e) => {
     e.classList.add("active");
   }
 });
-console.log(path, typeof path);

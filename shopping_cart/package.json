@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "uuid": "^9.0.0"
+  },
+  "name": "shopping_cart",
+  "version": "1.0.0",
+  "main": "app.js",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.5"
+  },
+  "scripts": {
+    "dev": "parcel store.html",
+    "build": "parcel build store.html"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
