@@ -39,7 +39,7 @@ buttonEle.addEventListener("click", () => {
       backdrop: true,
     });
   } else {
-    const flameValue = logic();
+    let flameValue = logic();
     if (!flameValue) {
       bootbox.alert({
         message: "Both Name's are same, pls Type a Valid Names",
