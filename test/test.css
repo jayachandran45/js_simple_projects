@@ -1,0 +1,33 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+.flex-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  height: 100vh;
+}
+.flex-container > div {
+  background-color: rgb(181, 186, 186);
+  padding: 8px;
+}
+#recording,
+#showing {
+  height: 300px;
+  width: 400px;
+  background-color: rgb(237, 230, 230);
+  border: 2px solid black;
+}
+
+#ss-btn {
+  display: flex;
+  justify-content: space-around;
+  padding: 4px;
+}
+
+#ss-btn > * {
+  padding: 3px 20px;
+}
