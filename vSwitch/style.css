@@ -1,0 +1,18 @@
+i {
+  cursor: pointer;
+  padding-top: 10px;
+  font-size: 2rem;
+}
+
+video {
+  width: 200px;
+  height: 250px;
+  background-color: red;
+}
+
+div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
