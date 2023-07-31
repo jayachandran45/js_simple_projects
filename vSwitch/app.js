@@ -30,7 +30,7 @@ async function switchCamera() {
       // Get the constraints for the new camera
       const constraints = {
         video: { deviceId: { exact: nextDeviceId } },
-        audio: true, // You can include audio constraints if needed
+        //audio: true, // You can include audio constraints if needed
       };
 
       // Get the new media stream with the switched camera
@@ -49,7 +49,7 @@ async function switchCamera() {
 // Start capturing video stream
 let stream;
 navigator.mediaDevices
-  .getUserMedia({ video: true, audio: true })
+  .getUserMedia({ video: true /* audio: true */ })
   .then((mediaStream) => {
     stream = mediaStream;
     const videoElement = document.querySelector("video");
