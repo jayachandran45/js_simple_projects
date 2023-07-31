@@ -58,6 +58,4 @@ navigator.mediaDevices
   .catch((error) => console.error("Error accessing media devices:", error));
 
 const iEle = document.querySelector("i");
-iEle.addEventListener("click", () => {
-  switchCamera();
-});
+iEle.addEventListener("click", switchCamera);
