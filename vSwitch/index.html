@@ -3,21 +3,48 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>vSwitch</title>
-    <script defer src="app.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <link rel="stylesheet" href="style.css" />
+    <title>Switch Camera Front/Back</title>
   </head>
   <body>
-    <div>
-      <video autoplay></video>
-      <i class="fa-solid fa-repeat"></i>
-    </div>
+    <video
+      id="videoElement"
+      width="640"
+      height="480"
+      autoplay
+      playsinline
+    ></video>
+    <button id="switchCameraButton">Switch Camera</button>
+
+    <script>
+      let currentCamera = "environment"; // 'environment' is used for the back camera, 'user' is used for the front camera
+
+      async function switchCamera() {
+        const constraints = { video: { facingMode: currentCamera } };
+
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia(constraints);
+          const videoElement = document.getElementById("videoElement");
+
+          // Stop the existing tracks
+          if (videoElement.srcObject) {
+            const tracks = videoElement.srcObject.getTracks();
+            tracks.forEach((track) => track.stop());
+          }
+
+          // Set the new stream to the video element
+          videoElement.srcObject = stream;
+        } catch (error) {
+          console.error("Error accessing media devices:", error);
+        }
+
+        // Toggle between front and back cameras
+        currentCamera =
+          currentCamera === "environment" ? "user" : "environment";
+      }
+
+      document
+        .getElementById("switchCameraButton")
+        .addEventListener("click", switchCamera);
+    </script>
   </body>
 </html>
