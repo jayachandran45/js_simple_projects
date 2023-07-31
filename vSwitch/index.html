@@ -19,9 +19,18 @@
       let currentCamera = "environment"; // 'environment' is used for the back camera, 'user' is used for the front camera
 
       async function switchCamera() {
-        const constraints = { video: { facingMode: currentCamera } };
-
         try {
+          const devices = await navigator.mediaDevices.enumerateDevices();
+          const videoDevices = devices.filter(
+            (device) => device.kind === "videoinput"
+          );
+
+          if (videoDevices.length < 2) {
+            console.log("Not enough video devices to switch cameras.");
+            return;
+          }
+
+          const constraints = { video: { facingMode: currentCamera } };
           const stream = await navigator.mediaDevices.getUserMedia(constraints);
           const videoElement = document.getElementById("videoElement");
 
