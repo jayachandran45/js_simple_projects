@@ -4,56 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Switch Camera Front/Back</title>
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="app.js"></script>
   </head>
   <body>
-    <video
-      id="videoElement"
-      width="640"
-      height="480"
-      autoplay
-      playsinline
-    ></video>
-    <button id="switchCameraButton">Switch Camera</button>
-
-    <script>
-      let currentCamera = "environment"; // 'environment' is used for the back camera, 'user' is used for the front camera
-
-      async function switchCamera() {
-        try {
-          const devices = await navigator.mediaDevices.enumerateDevices();
-          const videoDevices = devices.filter(
-            (device) => device.kind === "videoinput"
-          );
-
-          if (videoDevices.length < 2) {
-            console.log("Not enough video devices to switch cameras.");
-            return;
-          }
-
-          const constraints = { video: { facingMode: currentCamera } };
-          const stream = await navigator.mediaDevices.getUserMedia(constraints);
-          const videoElement = document.getElementById("videoElement");
-
-          // Stop the existing tracks
-          if (videoElement.srcObject) {
-            const tracks = videoElement.srcObject.getTracks();
-            tracks.forEach((track) => track.stop());
-          }
-
-          // Set the new stream to the video element
-          videoElement.srcObject = stream;
-        } catch (error) {
-          console.error("Error accessing media devices:", error);
-        }
-
-        // Toggle between front and back cameras
-        currentCamera =
-          currentCamera === "environment" ? "user" : "environment";
-      }
-
-      document
-        .getElementById("switchCameraButton")
-        .addEventListener("click", switchCamera);
-    </script>
+    <div>
+      <video
+        style="width: 250px; height: 300px; background-color: red"
+        autoplay
+      ></video>
+      <button>Swithch</button>
+    </div>
   </body>
 </html>
