@@ -1,6 +1,8 @@
-const videoEle = document.querySelector("video");
+const recordVideoEle = document.querySelector("#record-video");
+const renderVideoEle = document.querySelector("#render-video");
 let front = false;
 let mediaStream = null;
+let chunk = [];
 
 function switchCamera() {
   front = !front;
@@ -18,11 +20,41 @@ function switchCamera() {
     })
     .then((stream) => {
       mediaStream = stream;
-      videoEle.srcObject = stream;
+      recordVideoEle.srcObject = stream;
+      recordFunction(stream);
     })
     .catch((error) => {
       console.error("Error accessing media devices:", error);
     });
+}
+
+function recordFunction(mediaStream) {
+  mediaRecorder = new MediaRecorder(mediaStream, {
+    audioBitsPerSecond: 100000,
+    videoBitsPerSecond: 250000,
+    mimeType: "video/webm;codecs=vp9,opus",
+  });
+  mediaRecorder.start();
+  mediaRecorder.ondataavailable = function (e) {
+    if (e.data.size > 0) {
+      chunk.push(e.data);
+    }
+  };
+
+  mediaRecorder.onstop = function () {
+    const blob = new Blob(chunk, { type: "video/webm" });
+    const videoUrl = URL.createObjectURL(blob);
+    renderVideoEle.src = videoUrl;
+    const ele = document.createElement("h1");
+    const value = blob.size / 1000000;
+    ele.innerHTML = value;
+    document.body.appendChild(ele);
+  };
+
+  setTimeout(() => {
+    mediaRecorder.stop();
+    console.log(chunk, mediaRecorder);
+  }, 20000);
 }
 
 // Add event listener to the button to toggle the camera
