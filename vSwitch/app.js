@@ -1,12 +1,13 @@
 const videoEle = document.querySelector("video");
-let currentFacingMode = "environment"; // Initial facing mode, default to back camera
 
 function switchCamera() {
-  currentFacingMode = currentFacingMode === "user" ? "environment" : "user";
-
+  let front = false;
+  document.querySelector("button").onclick = () => {
+    front = !front;
+  };
   window.navigator.mediaDevices
     .getUserMedia({
-      video: { facingMode: { exact: currentFacingMode } },
+      video: { facingMode: front ? "user" : "environment" },
     })
     .then((stream) => {
       videoEle.srcObject = stream;
@@ -15,10 +16,3 @@ function switchCamera() {
       console.error("Error accessing media devices:", error);
     });
 }
-
-// Add event listener to the button to toggle the camera
-const toggleCameraButton = document.querySelector("button");
-toggleCameraButton.addEventListener("click", switchCamera);
-
-// Initially, get the video stream with the default facing mode (back camera)
-switchCamera();
