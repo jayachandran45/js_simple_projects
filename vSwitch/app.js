@@ -1,4 +1,4 @@
-const videoEle = document.querySelector(video);
+const videoEle = document.querySelector("video");
 let currentFacingMode = "environment"; // Initial facing mode, default to back camera
 
 function switchCamera() {
