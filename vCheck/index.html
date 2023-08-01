@@ -19,16 +19,16 @@
     <script>
       const videoEle = document.querySelector("video");
       let front = false;
-      //   let mediaStream = null;
+      let mediaStream = null;
 
       function switchCamera() {
         front = !front;
         const facingMode = front ? "user" : "environment";
 
-        // if (mediaStream) {
-        //   const tracks = mediaStream.getTracks();
-        //   tracks.forEach((track) => track.stop());
-        // }
+        if (mediaStream) {
+          const tracks = mediaStream.getTracks();
+          tracks.forEach((track) => track.stop());
+        }
 
         // Request a new media stream with the updated facingMode
         window.navigator.mediaDevices
@@ -36,7 +36,7 @@
             video: { facingMode: facingMode },
           })
           .then((stream) => {
-            // mediaStream = stream;
+            mediaStream = stream;
             videoEle.srcObject = stream;
           })
           .catch((error) => {
