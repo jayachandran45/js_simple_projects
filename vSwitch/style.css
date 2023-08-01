@@ -9,3 +9,6 @@ button {
   cursor: pointer;
   padding: 5px 10px;
 }
+body {
+  background-color: blue;
+}
