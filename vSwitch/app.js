@@ -7,7 +7,7 @@ function switchCamera() {
   const facingMode = front ? "user" : "environment";
 
   if (mediaStream) {
-    const tracks = currentStream.getTracks();
+    const tracks = mediaStream.getTracks();
     tracks.forEach((track) => track.stop());
   }
 
