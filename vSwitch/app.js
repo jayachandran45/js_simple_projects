@@ -23,8 +23,11 @@ function switchCamera() {
       mediaStream = stream;
       recordVideoEle.srcObject = stream;
 
+      // Combine the current mediaStream with the previous streams (if any)
+      const combinedMediaStream = combineMediaStreams([stream]);
+
       if (!mediaRecorder) {
-        mediaRecorder = new MediaRecorder(stream, {
+        mediaRecorder = new MediaRecorder(combinedMediaStream, {
           audioBitsPerSecond: 100000,
           videoBitsPerSecond: 250000,
           mimeType: "video/webm;codecs=vp9,opus",
@@ -64,3 +67,29 @@ setTimeout(() => {
   mediaRecorder.stop();
   console.log(chunk, mediaRecorder);
 }, 20000);
+
+function combineMediaStreams(streams) {
+  const audioTracks = [];
+  const videoTracks = [];
+
+  streams.forEach((stream) => {
+    stream.getTracks().forEach((track) => {
+      if (track.kind === "audio") {
+        audioTracks.push(track);
+      } else if (track.kind === "video") {
+        videoTracks.push(track);
+      }
+    });
+  });
+
+  const combinedAudioStream = new MediaStream(audioTracks);
+  const combinedVideoStream = new MediaStream(videoTracks);
+
+  // Merge audio and video streams into one
+  const combinedMediaStream = new MediaStream([
+    ...combinedAudioStream.getTracks(),
+    ...combinedVideoStream.getTracks(),
+  ]);
+
+  return combinedMediaStream;
+}
