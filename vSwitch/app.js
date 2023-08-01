@@ -17,7 +17,7 @@ function switchCamera() {
 }
 
 // Add event listener to the button to toggle the camera
-const toggleCameraButton = document.getElementById("toggleCameraButton");
+const toggleCameraButton = document.querySelector("button");
 toggleCameraButton.addEventListener("click", switchCamera);
 
 // Initially, get the video stream with the default facing mode (back camera)
