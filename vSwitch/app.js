@@ -2,8 +2,9 @@ const recordVideoEle = document.querySelector("#record-video");
 const renderVideoEle = document.querySelector("#render-video");
 let front = false;
 let mediaStream = null;
-let chunk = [];
+let chunks = [];
 let mediaRecorder = null;
+let timeoutSet = false;
 
 function switchCamera() {
   front = !front;
@@ -23,33 +24,16 @@ function switchCamera() {
       mediaStream = stream;
       recordVideoEle.srcObject = stream;
 
-      // Combine the current mediaStream with the previous streams (if any)
-      const combinedMediaStream = combineMediaStreams([stream]);
+      mediaRecorder = new MediaRecorder(stream);
+      mediaRecorder.ondataavailable = handleDataAvailable;
 
-      if (!mediaRecorder) {
-        mediaRecorder = new MediaRecorder(combinedMediaStream, {
-          audioBitsPerSecond: 100000,
-          videoBitsPerSecond: 250000,
-          mimeType: "video/webm;codecs=vp9,opus",
-        });
-        mediaRecorder.ondataavailable = function (e) {
-          if (e.data.size > 0) {
-            chunk.push(e.data);
-          }
-        };
-
-        mediaRecorder.onstop = function () {
-          const blob = new Blob(chunk, { type: "video/webm" });
-          const videoUrl = URL.createObjectURL(blob);
-          renderVideoEle.src = videoUrl;
-          const ele = document.createElement("h1");
-          const value = blob.size / 1000000;
-          ele.innerHTML = value;
-          document.body.appendChild(ele);
-        };
+      if (!timeoutSet) {
+        setTimeout(() => {
+          mediaRecorder.onstop = handleStop;
+          console.log("settimeout works");
+        }, 10000);
+        timeoutSet = true; // Set the flag to true after setting the timeout
       }
-
-      mediaRecorder.start();
     })
     .catch((error) => {
       console.error("Error accessing media devices:", error);
@@ -63,33 +47,18 @@ toggleCameraButton.addEventListener("click", switchCamera);
 // Initially, get the video stream with the default facing mode (front camera)
 switchCamera();
 
-setTimeout(() => {
-  mediaRecorder.stop();
-  console.log(chunk, mediaRecorder);
-}, 20000);
+function handleDataAvailable(event) {
+  if (event.data && event.data.size > 0) {
+    chunks.push(event.data);
+  }
+}
 
-function combineMediaStreams(streams) {
-  const audioTracks = [];
-  const videoTracks = [];
+function handleStop(event) {
+  const videoBlob = new Blob(chunks, { type: "video/webm" });
+  const videoBlobUrl = URL.createObjectURL(videoBlob);
 
-  streams.forEach((stream) => {
-    stream.getTracks().forEach((track) => {
-      if (track.kind === "audio") {
-        audioTracks.push(track);
-      } else if (track.kind === "video") {
-        videoTracks.push(track);
-      }
-    });
-  });
-
-  const combinedAudioStream = new MediaStream(audioTracks);
-  const combinedVideoStream = new MediaStream(videoTracks);
-
-  // Merge audio and video streams into one
-  const combinedMediaStream = new MediaStream([
-    ...combinedAudioStream.getTracks(),
-    ...combinedVideoStream.getTracks(),
-  ]);
-
-  return combinedMediaStream;
+  renderVideoEle.src = videoBlobUrl;
+  chunks = [];
+  // Use the videoBlob here as needed (e.g., upload to server, save to file, etc.)
+  console.log("Video Blob:", videoBlob);
 }
