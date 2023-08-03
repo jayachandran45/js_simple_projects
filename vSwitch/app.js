@@ -41,6 +41,7 @@ function switchCamera() {
         mediaRecorder.start();
       }
       if (m) {
+        mediaRecorder.stop();
         mediaRecorder1 = new MediaRecorder(stream);
 
         mediaRecorder1.ondataavailable = (event) => {
@@ -54,6 +55,7 @@ function switchCamera() {
         const completeBlob = new Blob(chunks, { type: "video/webm" });
         const videoUrl = URL.createObjectURL(completeBlob);
         renderVideoEle.src = videoUrl;
+        console.log(completeBlob);
       };
 
       mediaRecorder1.start();
