@@ -39,9 +39,11 @@ function switchCamera() {
         mediaRecorder.onstop = () => {
           console.log("record 1 stopped");
           const blo = new Blob(chunks);
+          console.log(chunks, chunks.length);
           console.log(blo);
         };
       }
+
       if (!m) {
         mediaRecorder1 = new MediaRecorder(stream);
         mediaRecorder1.start();
@@ -53,12 +55,20 @@ function switchCamera() {
 
         mediaRecorder1.onstop = () => {
           const completeBlob = new Blob(chunks);
-          const videoUrl = URL.createObjectURL(completeBlob);
-          renderVideoEle.src = videoUrl;
-          console.log(completeBlob);
+          console.log(chunks, chunks.length);
+
+          ConcatenateBlobs(chunks, "audio/wav", function (resultingBlob) {
+            // POST_to_Server(resultingBlob);
+
+            // or preview locally
+            // localVideo.src = URL.createObjectURL(resultingBlob);
+            const videoUrl = URL.createObjectURL(resultingBlob);
+            renderVideoEle.src = videoUrl;
+            console.log(completeBlob);
+          });
         };
       }
-      m = false;
+      m = false ? true : false;
     })
     .catch((error) => {
       console.error("Error accessing media devices:", error);
