@@ -11,9 +11,10 @@ let m = true;
 
 function switchCamera() {
   front = !front;
-  const facingMode = front ? "user" : "environment";
+  let facingMode = front ? "user" : "environment";
 
   if (mediaStream) {
+    mediaRecorder.stop();
     const tracks = mediaStream.getTracks();
     tracks.forEach((track) => track.stop());
   }
@@ -37,12 +38,11 @@ function switchCamera() {
         };
         mediaRecorder.onstop = () => {
           console.log("record 1 stopped");
-          const blo = new Blob(chunks, { type: "video/webm" });
+          const blo = new Blob(chunks);
           console.log(blo);
         };
       }
       if (!m) {
-        mediaRecorder.stop();
         mediaRecorder1 = new MediaRecorder(stream);
         mediaRecorder1.start();
         mediaRecorder1.ondataavailable = (event) => {
@@ -52,7 +52,7 @@ function switchCamera() {
         };
 
         mediaRecorder1.onstop = () => {
-          const completeBlob = new Blob(chunks, { type: "video/webm" });
+          const completeBlob = new Blob(chunks);
           const videoUrl = URL.createObjectURL(completeBlob);
           renderVideoEle.src = videoUrl;
           console.log(completeBlob);
