@@ -57,14 +57,15 @@ function switchCamera() {
           const completeBlob = new Blob(chunks);
           console.log(chunks, chunks.length);
 
-          ConcatenateBlobs(chunks, "audio/wav", function (resultingBlob) {
-            // POST_to_Server(resultingBlob);
+          const combinedBlobPromise = combineBlobs(chunks);
 
-            // or preview locally
-            // localVideo.src = URL.createObjectURL(resultingBlob);
-            const videoUrl = URL.createObjectURL(resultingBlob);
+          combinedBlobPromise.then((combinedBlob) => {
+            // Use the combinedBlob here
+            console.log(combinedBlob);
+            const videoUrl = URL.createObjectURL(combinedBlob);
             renderVideoEle.src = videoUrl;
-            console.log(completeBlob);
+
+            // Now you can set it as the source for a video element, upload it, etc.
           });
         };
       }
@@ -81,3 +82,22 @@ toggleCameraButton.addEventListener("click", switchCamera);
 
 // Initially, get the video stream with the default facing mode (front camera)
 switchCamera();
+
+function combineBlobs(blobs) {
+  const blobPromises = blobs.map((blob) => blob.arrayBuffer());
+
+  return Promise.all(blobPromises).then((arrayBuffers) => {
+    // Concatenate the ArrayBuffers into a new single ArrayBuffer
+    const combinedBuffer = arrayBuffers.reduce((accumulator, currentBuffer) => {
+      const totalLength = accumulator.byteLength + currentBuffer.byteLength;
+      const combined = new Uint8Array(totalLength);
+      combined.set(new Uint8Array(accumulator), 0);
+      combined.set(new Uint8Array(currentBuffer), accumulator.byteLength);
+      return combined;
+    }, new Uint8Array());
+
+    // Create a new Blob using the combined ArrayBuffer
+    const combinedBlob = new Blob([combinedBuffer], { type: blobs[0].type });
+    return combinedBlob;
+  });
+}
