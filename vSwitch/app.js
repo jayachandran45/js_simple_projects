@@ -29,18 +29,22 @@ function switchCamera() {
 
       if (m) {
         mediaRecorder = new MediaRecorder(stream);
-
+        mediaRecorder.start();
         mediaRecorder.ondataavailable = (event) => {
           if (event.data.size > 0) {
             chunks.push(event.data);
           }
         };
-        mediaRecorder.start();
+        mediaRecorder.onstop = () => {
+          console.log("record 1 stopped");
+          const blo = new Blob(chunks, { type: "video/webm" });
+          console.log(blo);
+        };
       }
       if (!m) {
         mediaRecorder.stop();
         mediaRecorder1 = new MediaRecorder(stream);
-
+        mediaRecorder1.start();
         mediaRecorder1.ondataavailable = (event) => {
           if (event.data.size > 0) {
             chunks.push(event.data);
@@ -53,7 +57,6 @@ function switchCamera() {
           renderVideoEle.src = videoUrl;
           console.log(completeBlob);
         };
-        mediaRecorder1.start();
       }
       m = false;
     })
