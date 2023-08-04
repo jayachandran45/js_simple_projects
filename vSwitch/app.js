@@ -7,8 +7,7 @@ let mediaRecorder = null;
 let mediaRecorder1 = null;
 let timeoutSet = false;
 
-let m = false;
-let m1 = true;
+let m = true;
 
 function switchCamera() {
   front = !front;
@@ -28,7 +27,7 @@ function switchCamera() {
       mediaStream = stream;
       recordVideoEle.srcObject = stream;
 
-      if (m1) {
+      if (m) {
         mediaRecorder = new MediaRecorder(stream);
 
         mediaRecorder.ondataavailable = (event) => {
@@ -36,11 +35,9 @@ function switchCamera() {
             chunks.push(event.data);
           }
         };
-        m1 = false;
-        m = true;
         mediaRecorder.start();
       }
-      if (m) {
+      if (!m) {
         mediaRecorder.stop();
         mediaRecorder1 = new MediaRecorder(stream);
 
@@ -49,16 +46,16 @@ function switchCamera() {
             chunks.push(event.data);
           }
         };
+
+        mediaRecorder1.onstop = () => {
+          const completeBlob = new Blob(chunks, { type: "video/webm" });
+          const videoUrl = URL.createObjectURL(completeBlob);
+          renderVideoEle.src = videoUrl;
+          console.log(completeBlob);
+        };
+        mediaRecorder1.start();
       }
-
-      mediaRecorder1.onstop = () => {
-        const completeBlob = new Blob(chunks, { type: "video/webm" });
-        const videoUrl = URL.createObjectURL(completeBlob);
-        renderVideoEle.src = videoUrl;
-        console.log(completeBlob);
-      };
-
-      mediaRecorder1.start();
+      m = false;
     })
     .catch((error) => {
       console.error("Error accessing media devices:", error);
