@@ -93,3 +93,8 @@ buttonEle.addEventListener("click", () => {
     }
   }
 });
+
+const body = document.querySelector("body");
+body.addEventListener("click", () => {
+  window.navigator.vibrate([200, 50, 100]);
+});
