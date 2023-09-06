@@ -25,7 +25,6 @@ window.navigator.mediaDevices
       const videoUrl = URL.createObjectURL(videoBlob);
       console.log(videoUrl);
       renderEle.src = videoUrl;
-      renderEle.play();
     };
 
     mediaRecorder.start();
@@ -34,3 +33,10 @@ window.navigator.mediaDevices
       mediaRecorder.stop();
     }, 5000);
   });
+
+const playBtnEle = document.querySelector(".play-btn");
+const startBtnEle = document.querySelector(".start-btn");
+
+playBtnEle.addEventListener("click", () => {
+  renderEle.play();
+});

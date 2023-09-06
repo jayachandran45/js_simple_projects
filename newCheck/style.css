@@ -5,4 +5,12 @@ video {
 div {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+}
+h1 {
+  border: 2px solid red;
+}
+
+h1:hover {
+  cursor: pointer;
 }
