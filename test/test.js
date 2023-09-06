@@ -1,57 +1,73 @@
 // selecting all the value using dom we want
 const recordVideoEle = document.querySelector("#recording");
-const showingVideoEle = document.querySelector("#showing");
+const showVideoEle = document.querySelector("#showing");
 const startBtn = document.querySelector("#start");
 const stopBtn = document.querySelector("#stop");
-const showVideoEle = document.querySelector("#showing");
-let chunk = [];
+const playBtn = document.querySelector("#play");
+const pauseBtn = document.querySelector("#pause");
+
 let mediaRecorder;
-async function record() {
+let chunks = [];
+
+async function startCamera() {
   try {
-    const mediaStream = await navigator.mediaDevices.getUserMedia({
-      video: { width: { ideal: 1280 }, height: { ideal: 720 } },
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: true,
     });
-
-    recordVideoEle.srcObject = mediaStream;
-
-    // start btn functionality
-    recordFunction(mediaStream);
-  } catch (e) {
-    alert("allow video and audio");
+    recordVideoEle.srcObject = stream;
+  } catch (error) {
+    console.error("Error accessing camera:", error);
   }
 }
 
-record();
+startCamera();
 
-function recordFunction(mediaStream) {
-  mediaRecorder = new MediaRecorder(mediaStream, {
-    videoBitsPerSecond: 250000,
-    mimeType: "video/webm;codecs=vp9,opus",
-  });
-  mediaRecorder.start();
-  mediaRecorder.ondataavailable = function (e) {
-    if (e.data.size > 0) {
-      chunk.push(e.data);
+startBtn.addEventListener("click", () => {
+  mediaRecorder = new MediaRecorder(recordVideoEle.srcObject);
+  mediaRecorder.ondataavailable = (event) => {
+    if (event.data.size > 0) {
+      chunks.push(event.data);
     }
   };
 
-  mediaRecorder.onstop = function () {
-    const blob = new Blob(chunk, { type: "video/webm" });
-    const videoUrl = URL.createObjectURL(blob);
-    showVideoEle.src = videoUrl;
-    const ele = document.createElement("h1");
-    const value = blob.size / 1000000;
-    ele.innerHTML = value;
-    document.body.appendChild(ele);
+  mediaRecorder.onstop = () => {
+    const videoBlob = new Blob(chunks, { type: "video/webm" });
+    showVideoEle.src = URL.createObjectURL(videoBlob);
+    console.log(videoBlob.size);
+    showVideoEle.play();
   };
 
-  setTimeout(() => {
-    mediaRecorder.stop();
-    console.log(chunk, mediaRecorder);
-  }, 40000);
-}
+  mediaRecorder.start();
+  startBtn.disabled = true;
+  // pauseBtn.disabled = false;
+  // stopBtn.disabled = false;
 
-startBtn.addEventListener("click", () => {
-  startBtn.disable = true;
-  stopBtn.disable = false;
+  setTimeout(() => {
+    stopRecording();
+  }, 5000); // Stop recording after 50 seconds
 });
+
+// pauseBtn.addEventListener("click", () => {
+//   if (mediaRecorder.state === "recording") {
+//     mediaRecorder.pause();
+//     pauseBtn.innerText = "Resume Recording";
+//   } else if (mediaRecorder.state === "paused") {
+//     mediaRecorder.resume();
+//     pauseBtn.innerText = "Pause Recording";
+//   }
+// });
+
+// stopBtn.addEventListener("click", () => {
+//   stopRecording();
+// });
+
+function stopRecording() {
+  // if (mediaRecorder.state === "recording" || mediaRecorder.state === "paused") {
+  //   mediaRecorder.stop();
+  //   startBtn.disabled = false;
+  //   pauseBtn.disabled = true;
+  //   stopBtn.disabled = true;
+  // }
+  mediaRecorder.stop();
+}
