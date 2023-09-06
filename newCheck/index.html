@@ -3,16 +3,61 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css" />
-    <script src="app.js" defer></script>
+    <title>Video Recording and Playback</title>
   </head>
   <body>
-    <div>
-      <video id="record"></video>
-      <h1 class="start-btn">start</h1>
-      <video id="render"></video>
-      <h1 class="play-btn">play</h1>
-    </div>
+    <h1>Video Recording</h1>
+    <video id="recordedVideo" width="400" height="300" autoplay muted></video>
+    <button id="startRecording">Start Recording</button>
+    <button id="stopRecording" disabled>Stop Recording</button>
+    <h1>Video Playback</h1>
+    <video id="playbackVideo" width="400" height="300" controls></video>
+
+    <script>
+      const recordedVideo = document.getElementById("recordedVideo");
+      const startRecordingButton = document.getElementById("startRecording");
+      const stopRecordingButton = document.getElementById("stopRecording");
+      const playbackVideo = document.getElementById("playbackVideo");
+      let mediaRecorder;
+      let chunks = [];
+
+      startRecordingButton.addEventListener("click", async () => {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+          });
+          recordedVideo.srcObject = stream;
+
+          mediaRecorder = new MediaRecorder(stream);
+
+          mediaRecorder.ondataavailable = (event) => {
+            if (event.data.size > 0) {
+              chunks.push(event.data);
+            }
+          };
+
+          mediaRecorder.onstop = () => {
+            const videoBlob = new Blob(chunks, { type: "video/webm" });
+            const videoUrl = URL.createObjectURL(videoBlob);
+            playbackVideo.src = videoUrl;
+            playbackVideo.load();
+          };
+
+          mediaRecorder.start();
+          startRecordingButton.disabled = true;
+          stopRecordingButton.disabled = false;
+        } catch (error) {
+          console.error("Error accessing camera:", error);
+        }
+      });
+
+      stopRecordingButton.addEventListener("click", () => {
+        if (mediaRecorder && mediaRecorder.state === "recording") {
+          mediaRecorder.stop();
+          startRecordingButton.disabled = false;
+          stopRecordingButton.disabled = true;
+        }
+      });
+    </script>
   </body>
 </html>
