@@ -16,7 +16,9 @@
       width="400"
       height="300"
       controls
-      x-webkit-airplay="deny"
+      playsinline
+      muted
+      type="video/webm"
     ></video>
 
     <script>
@@ -34,7 +36,9 @@
           });
           recordedVideo.srcObject = stream;
 
-          mediaRecorder = new MediaRecorder(stream);
+          mediaRecorder = new MediaRecorder(stream, {
+            mimeType: 'video/webm; codecs="VP8"',
+          });
 
           mediaRecorder.ondataavailable = (event) => {
             if (event.data.size > 0) {
@@ -47,7 +51,6 @@
             const videoUrl = URL.createObjectURL(videoBlob);
             playbackVideo.src = videoUrl;
             playbackVideo.load();
-            playbackVideo.play();
           };
 
           mediaRecorder.start();
