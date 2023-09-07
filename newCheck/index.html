@@ -47,6 +47,7 @@
             const videoUrl = URL.createObjectURL(videoBlob);
             playbackVideo.src = videoUrl;
             playbackVideo.load();
+            playbackVideo.play();
           };
 
           mediaRecorder.start();
