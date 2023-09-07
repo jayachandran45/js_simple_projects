@@ -48,9 +48,17 @@
 
           mediaRecorder.onstop = () => {
             const videoBlob = new Blob(chunks, { type: "video/webm" });
-            const videoUrl = URL.createObjectURL(videoBlob);
-            playbackVideo.src = videoUrl;
+            // const videoUrl = URL.createObjectURL(videoBlob);
+            // playbackVideo.src = videoUrl;
             playbackVideo.load();
+
+            // Example usage:
+            const myBlob = videoBlob;
+            blobToBase64(myBlob, function (base64String) {
+              const dataurl = "data:video/webm;base64," + base64String;
+              playbackVideo.src = dataurl;
+              console.log(base64String); // This will log the Base64-encoded string to the console
+            });
           };
 
           mediaRecorder.start();
@@ -68,6 +76,15 @@
           stopRecordingButton.disabled = true;
         }
       });
+
+      function blobToBase64(blob, callback) {
+        const reader = new FileReader();
+        reader.onload = function () {
+          const base64String = reader.result.split(",")[1];
+          callback(base64String);
+        };
+        reader.readAsDataURL(blob);
+      }
     </script>
   </body>
 </html>
