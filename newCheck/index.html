@@ -11,7 +11,13 @@
     <button id="startRecording">Start Recording</button>
     <button id="stopRecording" disabled>Stop Recording</button>
     <h1>Video Playback</h1>
-    <video id="playbackVideo" width="400" height="300" controls></video>
+    <video
+      id="playbackVideo"
+      width="400"
+      height="300"
+      controls
+      x-webkit-airplay="deny"
+    ></video>
 
     <script>
       const recordedVideo = document.getElementById("recordedVideo");
