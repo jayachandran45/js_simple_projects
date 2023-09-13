@@ -15,7 +15,6 @@ async function startCamera() {
     mediaRecorder = new MediaRecorder(canvasElement.captureStream(), {
       mimeType: "video/webm",
     });
-
     mediaRecorder.ondataavailable = (event) => {
       if (event.data.size > 0) {
         recordedChunks.push(event.data);
