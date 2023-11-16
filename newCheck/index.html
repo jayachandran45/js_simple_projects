@@ -42,7 +42,9 @@
 
           mediaRecorder.ondataavailable = (event) => {
             if (event.data.size > 0) {
-              chunks.push(event.data);
+              chunks.push(processVideoFrame(event.data));
+              processVideoFrame(event.data);
+              // chunks.push(event.data);
             }
           };
 
@@ -84,6 +86,37 @@
           callback(base64String);
         };
         reader.readAsDataURL(blob);
+      }
+
+      function processVideoFrame(videoFrame) {
+        const videoFrameURL = URL.createObjectURL(videoFrame);
+        const videoImage = new Image();
+        videoImage.src = videoFrameURL;
+
+        videoImage.onload = () => {
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+          canvas.width = videoImage.width;
+          canvas.height = videoImage.height;
+
+          // Draw the video frame on the canvas
+          ctx.drawImage(videoImage, 0, 0);
+
+          // Add text overlay
+          ctx.font = "24px Arial";
+          ctx.fillStyle = "white";
+          ctx.fillText(new Date().toLocaleTimeString(), 20, 40);
+
+          // Convert the canvas back to a Blob for recording
+          canvas.toBlob(
+            (blob) => {
+              // Send the processed video frame to the recorder
+              mediaRecorder.postMessage(blob);
+            },
+            "image/jpeg",
+            0.9
+          ); // You can specify the desired image format and quality
+        };
       }
     </script>
   </body>

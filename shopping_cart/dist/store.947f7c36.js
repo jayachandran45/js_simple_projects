@@ -864,7 +864,7 @@ var iEle = document.querySelector("i");
 var cardItem = [];
 var cartCardItem = [];
 //  render it inside append element
-
+JSON.stringify(localStorage.setItem("cartItem", {}));
 cartCardItem = JSON.parse(localStorage.getItem("cartItem"));
 if (cartCardItem.length) {
   cartCardItem.forEach(function (e) {
@@ -1062,7 +1062,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56663" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59294" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

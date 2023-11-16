@@ -11,7 +11,7 @@ const iEle = document.querySelector("i");
 let cardItem = [];
 let cartCardItem = [];
 //  render it inside append element
-
+localStorage.setItem("cartItem", JSON.stringify({}));
 cartCardItem = JSON.parse(localStorage.getItem("cartItem"));
 if (cartCardItem.length) {
   cartCardItem.forEach((e) => {

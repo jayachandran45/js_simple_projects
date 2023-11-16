@@ -9,9 +9,10 @@
     "parcel-bundler": "^1.12.5"
   },
   "scripts": {
-    "dev": "parcel store.html",
+    "start": "parcel store.html",
     "build": "parcel build store.html"
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "description": ""

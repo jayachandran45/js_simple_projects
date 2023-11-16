@@ -1,0 +1,18 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+input {
+  width: 30vw;
+  height: 30px;
+}
+#calc-btn {
+  height: 30px !important;
+  display: inline-block;
+  cursor: pointer;
+  padding: 0 1rem;
+}
+body {
+  margin: 2rem 4rem;
+}

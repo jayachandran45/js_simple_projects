@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "parcel": "^2.9.3"
+  },
+  "name": "video",
+  "version": "1.0.0",
+  "main": "app.js",
+  "devDependencies": {},
+  "scripts": {
+    "start": "parcel index.html"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
